@@ -1,8 +1,6 @@
 telegram bot to control
 - wireguard
-- shadowsocks + v2ray
 - adguard home
-- PAC dynamic url
 ---
 environment: ubuntu 18.04/20.04/22.04, debian 11
 
