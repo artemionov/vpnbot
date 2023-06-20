@@ -19,8 +19,6 @@ unit: # консоль сервиса
 	docker compose exec unit bash
 wg: # консоль сервиса
 	docker compose exec wg bash
-ss: # консоль сервиса
-	docker compose exec ss bash
 ng: # консоль сервиса
 	docker compose exec ng bash
 doh: # консоль сервиса
@@ -29,5 +27,3 @@ ad: # консоль сервиса
 	docker compose exec ad bash
 proxy: # консоль сервиса
 	docker compose exec proxy bash
-tg: # консоль сервиса
-	docker compose exec tg bash
