@@ -37,8 +37,6 @@ services:
                 condition: service_healthy
             ad:
                 condition: service_started
-            ss:
-                condition: service_started
         environment:
             TZ: ${TZ}
             SSPORT: ${SSPORT}
@@ -60,9 +58,6 @@ services:
             - ./config/AdGuardHome.yaml:/config/AdGuardHome.yaml
             - ./config/nginx.conf:/config/nginx.conf
             - ./config/nginx_default.conf:/config/nginx_default.conf
-            - ./config/ssserver.json:/config/ssserver.json
-            - ./config/sslocal.json:/config/sslocal.json
-            - ./config/mtprotosecret:/config/mtprotosecret
             - ./certs/:/certs/
             - type: volume
               target: /config/adguard
@@ -78,8 +73,6 @@ services:
             IP: ${IP}
             ADDRESS: ${WGADDRESS}
             WGPORT: ${WGPORT}
-            SSPORT: ${SSPORT}
-            TGPORT: ${TGPORT}
         hostname: unit
         restart: unless-stopped
         stop_grace_period: 1s
@@ -96,30 +89,6 @@ services:
             interval: 5s
             timeout: 5s
             retries: 5
-    proxy:
-        build:
-            dockerfile: dockerfile/shadowsocks.dockerfile
-            args:
-                RELEASE: ${RELEASE}
-                SYSTEM: ${SYSTEM}
-        volumes:
-            - ./config/.profile:/root/.bashrc:ro
-            - ./config/sslocal.json:/config.json
-            - ./ssh:/ssh
-            - ./scripts/start_proxy.sh:/start_proxy.sh
-        hostname: proxy
-        depends_on:
-            unit:
-                condition: service_healthy
-        networks:
-            default:
-                ipv4_address: 10.10.0.3
-        environment:
-            TZ: ${TZ}
-            SSPORT: ${SSPORT}
-        stop_grace_period: 1s
-        command: ["/bin/sh", "/start_proxy.sh"]
-        logging: *default-logging
     wg:
         build:
             dockerfile: dockerfile/wireguard.dockerfile
